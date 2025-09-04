@@ -1,0 +1,23 @@
+all: dosxplod.dll
+
+OBJS = doscalls.obj dpmi.obj viocalls.obj kbdcalls.obj
+
+doscalls.obj: doscalls.c
+	cl /c /Z7 doscalls.c
+
+dpmi.obj: dpmi.c
+	cl /c /Z7 dpmi.c
+
+viocalls.obj: viocalls.c
+	cl /c /Z7 viocalls.c
+
+kbdcalls.obj: kbdcalls.c
+	cl /c /Z7 kbdcalls.c
+
+dosxplod.dll: $(OBJS)
+	link /dll $(OBJS) /DEBUG /DEBUGTYPE:COFF /DEF:DOSXPLOD.DEF /NODEFAULTLIB
+
+
+test.exe: test.c
+	cl /c /Z7 test.c
+	link test.obj /NODEFAULTLIB /DEBUG /DEBUGTYPE:COFF /entry:mainCRTStartup doscalls.lib /SUBSYSTEM:WINDOWS
