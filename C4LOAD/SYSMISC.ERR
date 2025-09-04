@@ -1,0 +1,28 @@
+..\I386INS.H(71): Warning! W107: Missing return value for function 'int386'
+..\I386INS.H(78): Warning! W107: Missing return value for function 'int386x'
+..\I386INS.H(88): Warning! W107: Missing return value for function 'getCR2'
+..\I386INS.H(100): Warning! W107: Missing return value for function 'readcsbyte'
+..\I386INS.H(112): Warning! W107: Missing return value for function 'readssdword'
+..\I386INS.H(132): Warning! W107: Missing return value for function 'fpeekb'
+..\I386INS.H(152): Warning! W107: Missing return value for function 'fpeekw'
+..\I386INS.H(172): Warning! W107: Missing return value for function 'fpeekd'
+..\I386INS.H(255): Warning! W107: Missing return value for function 'getCS'
+..\I386INS.H(265): Warning! W107: Missing return value for function 'getDS'
+..\I386INS.H(275): Warning! W107: Missing return value for function 'getES'
+..\I386INS.H(285): Warning! W107: Missing return value for function 'getSS'
+..\I386INS.H(295): Warning! W107: Missing return value for function 'getFS'
+..\I386INS.H(305): Warning! W107: Missing return value for function 'getGS'
+..\I386INS.H(503): Warning! W107: Missing return value for function 'inb'
+..\I386INS.H(515): Warning! W107: Missing return value for function 'inw'
+..\I386INS.H(527): Warning! W107: Missing return value for function 'ind'
+SYSMISC.C(86): Warning! W131: No prototype found for function 'isdigit'
+SYSMISC.C(184): Warning! W113: Pointer type mismatch
+SYSMISC.C(184): Note! I2003: source conversion type is 'char **'
+SYSMISC.C(184): Note! I2004: target conversion type is 'void **'
+SYSMISC.C(186): Warning! E1181: Parameter 1, sign specifier mismatch
+SYSMISC.C(186): Note! I2003: source conversion type is 'signed char *'
+SYSMISC.C(186): Note! I2004: target conversion type is 'char *'
+SYSMISC.C(189): Warning! E1181: Parameter 1, sign specifier mismatch
+SYSMISC.C(189): Note! I2003: source conversion type is 'signed char *'
+SYSMISC.C(189): Note! I2004: target conversion type is 'char const *'
+SYSMISC.C(189): Note! I2002: 'strlen' defined in: ..\DOSXPLOD.H(99)

@@ -1,0 +1,81 @@
+DDT32 Symbolic Debugger
+
+Hook interrupt vectors for debugger interface
+Hook exception handlers
+
+
+
+Command List
+A [<address>] - assemble
+B[C|D|E] [<bps>] - clear/enable/disable breakpoint(s)
+BL - list breakpoints
+BA[id] <access> <size> [Options] <addr> - set processor breakpoint
+BP[id] [Options] <address> - set soft breakpoint
+C <range> <address> - compare memory
+D[type] [<range>] - display memory
+E[type] <address> [<values>] - enter memory values
+F <range> <list> - fill memory with pattern
+G [<address>] - go
+K - stacktrace
+LM - list loaded modules
+LN <expr> - list nearest symbols
+P [=<addr>] [<count=1>] - program step out
+Q - quit
+R [<reg> [=<expr>]] - view or set registers
+S <range> <list> - search memory for pattern
+T [=<addr>] [<count=1>] - trace / step in
+U [<range>] - unassemble
+X Wildcard - view symbols
+? <expr> - display/evaluate expression
+
+<expr> unary ops: - ~
+       binary ops: + - * << >> & ^ |
+       comparisons: == < > !=
+       operands: number in hexadecimal, public symbol, <reg>
+<type> : b (byte), w (word), d (doubleword)
+<range>: <address> <address>
+         <address> L <count>
+
+x86 options:
+DG [<list>] - dump selectors
+DIDT [<list>] - dump interrupt descriptors
+DIVT [<list>] - dump interrupt vectors
+<reg> : [e]ax, [e]bx, [e]cx, [e]dx, [e]si, [e]di, [e]bp, [e]sp, [e]ip, [e]fl,
+        al, ah, bl, bh, cl, ch, dl, dh, cs, ds, es, fs, gs, ss
+<flag>: iopl, of, df, if, tf, sf, zf, af, pf, cf
+<addr>: %<protect-mode [seg:]address>
+        &<real/V86-mode [seg:]address>
+        @<linear address>
+
+Conditional breakpoints?
+Load/save memory ranges to disk sectors and files
+
+> Real mode
+- Virtual86 mode
+# Protected-mode
+
+
+In the future, a TUI debugger along the lines of CodeView/TD/SoftICE will be desired.
+
+Handling exceptions from real-mode will require hooking the real-mode interrupt vectors with callbacks
+    Handling the first 8 exceptions this way is easy, but what about the protmode ones?
+It's probably best to indirect them all through a single callback, patch the IVT entries to point to routines that set up params
+
+
+AX=00000000  BX=00000000  CX=00000000  DX=00000000  SI=00000000  DI=00000000
+IP=00000000  SP=00000000  BP=00000000  IOPL=0        NC PO NA NZ PL EI UP NV
+CS=0000  SS=0000  DS=0000  ES=0000  FS=0000  GS=0000  CR3=00000   EFL=000000
+ntdll!LdrpDoDebuggerBreak+0x4e:
+0028:8029CCF7    DIV    ECX
+# 
+
+
+Use my own I/O routines (BIOS is okay, DOS is not)
+
+
+CMD.C - Handles command parsing
+EXPR.C - Expression parsing
+DASM386.C - 80386 disassembler
+ASM386.C - 80386 assembler
+
+At some point, consider splitting out some of the debugging functionality into a DLL

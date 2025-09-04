@@ -1,0 +1,9 @@
+all: ddt32.exe
+
+OBJS = main.obj
+
+main.obj: main.c
+	cl /c /Z7 main.c
+
+ddt32.exe: $(OBJS)
+	link $(OBJS) /DEBUG /DEBUGTYPE:COFF /NODEFAULTLIB  /entry:mainCRTStartup ..\dosxplod\doscalls.lib /out:ddt32.exe

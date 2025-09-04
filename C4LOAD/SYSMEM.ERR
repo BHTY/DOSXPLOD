@@ -1,0 +1,12 @@
+SYSMEM.C(80): Warning! W102: Type mismatch (warning)
+SYSMEM.C(80): Note! I2003: source conversion type is 'unsigned long'
+SYSMEM.C(80): Note! I2004: target conversion type is 'void *'
+SYSMEM.C(82): Warning! W102: Type mismatch (warning)
+SYSMEM.C(82): Note! I2003: source conversion type is 'unsigned long'
+SYSMEM.C(82): Note! I2004: target conversion type is 'void *'
+SYSMEM.C(110): Warning! W102: Type mismatch (warning)
+SYSMEM.C(110): Note! I2003: source conversion type is 'unsigned long'
+SYSMEM.C(110): Note! I2004: target conversion type is 'void *'
+SYSMEM.C(112): Warning! W102: Type mismatch (warning)
+SYSMEM.C(112): Note! I2003: source conversion type is 'unsigned long'
+SYSMEM.C(112): Note! I2004: target conversion type is 'void *'

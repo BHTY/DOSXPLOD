@@ -1,0 +1,34 @@
+# Makefile for REDSTAR game engine
+CC = wcc386 -d2 -ot -hw -zq -i=..
+AS = wasm -zq
+
+# Names for build targets
+all: C4.EXE
+
+# Objects
+OBJS = C4.OBJ CALLS.OBJ LDR.OBJ SYSLDR.OBJ SYSMEM.OBJ SYSMISC.OBJ EXCEPT.OBJ
+
+C4.OBJ: C4.C
+	$(CC) -frC4.ERR -fo$@ C4.C
+
+CALLS.OBJ: CALLS.C
+	$(CC) -frCALLS.ERR -fo$@ CALLS.C
+
+SYSLDR.OBJ: SYSLDR.C
+	$(CC) -frSYSLDR.ERR -fo$@ SYSLDR.C
+
+LDR.OBJ: LDR.C
+	$(CC) -frLDR.ERR -fo$@ LDR.C
+
+SYSMEM.OBJ: SYSMEM.C
+	$(CC) -frSYSMEM.ERR -fo$@ SYSMEM.C
+
+SYSMISC.OBJ: SYSMISC.C
+	$(CC) -frSYSMISC.ERR -fo$@ SYSMISC.C
+
+EXCEPT.OBJ: EXCEPT.ASM
+	$(AS) -frEXCEPT.ERR -fo$@ EXCEPT.ASM
+
+# C4 loader target
+C4.EXE: $(OBJS)
+	wlink @C4.LNK

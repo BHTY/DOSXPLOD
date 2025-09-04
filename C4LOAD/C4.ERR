@@ -1,0 +1,28 @@
+..\I386INS.H(80): Warning! W107: Missing return value for function 'int386'
+..\I386INS.H(87): Warning! W107: Missing return value for function 'int386x'
+..\I386INS.H(97): Warning! W107: Missing return value for function 'getCR2'
+..\I386INS.H(107): Warning! W107: Missing return value for function 'getCR3'
+..\I386INS.H(119): Warning! W107: Missing return value for function 'readcsbyte'
+..\I386INS.H(131): Warning! W107: Missing return value for function 'readssdword'
+..\I386INS.H(151): Warning! W107: Missing return value for function 'fpeekb'
+..\I386INS.H(171): Warning! W107: Missing return value for function 'fpeekw'
+..\I386INS.H(191): Warning! W107: Missing return value for function 'fpeekd'
+..\I386INS.H(274): Warning! W107: Missing return value for function 'getCS'
+..\I386INS.H(284): Warning! W107: Missing return value for function 'getDS'
+..\I386INS.H(294): Warning! W107: Missing return value for function 'getES'
+..\I386INS.H(304): Warning! W107: Missing return value for function 'getSS'
+..\I386INS.H(314): Warning! W107: Missing return value for function 'getFS'
+..\I386INS.H(324): Warning! W107: Missing return value for function 'getGS'
+..\I386INS.H(522): Warning! W107: Missing return value for function 'inb'
+..\I386INS.H(534): Warning! W107: Missing return value for function 'inw'
+..\I386INS.H(546): Warning! W107: Missing return value for function 'ind'
+C4.C(96): Warning! W113: Pointer type mismatch
+C4.C(96): Note! I2003: source conversion type is 'unsigned char *'
+C4.C(96): Note! I2004: target conversion type is 'int (*)()'
+C4.C(336): Warning! E1181: Parameter 1, sign specifier mismatch
+C4.C(336): Note! I2003: source conversion type is 'char *'
+C4.C(336): Note! I2004: target conversion type is 'signed char *'
+C4.C(336): Warning! E1181: Parameter 2, sign specifier mismatch
+C4.C(336): Note! I2003: source conversion type is 'char *'
+C4.C(336): Note! I2004: target conversion type is 'signed char *'
+C4.C(336): Note! I2002: 'LdrPrintError' defined in: C4.C(106)

@@ -1,0 +1,65 @@
+..\I386INS.H(71): Warning! W107: Missing return value for function 'int386'
+..\I386INS.H(78): Warning! W107: Missing return value for function 'int386x'
+..\I386INS.H(88): Warning! W107: Missing return value for function 'getCR2'
+..\I386INS.H(100): Warning! W107: Missing return value for function 'readcsbyte'
+..\I386INS.H(112): Warning! W107: Missing return value for function 'readssdword'
+..\I386INS.H(132): Warning! W107: Missing return value for function 'fpeekb'
+..\I386INS.H(152): Warning! W107: Missing return value for function 'fpeekw'
+..\I386INS.H(172): Warning! W107: Missing return value for function 'fpeekd'
+..\I386INS.H(255): Warning! W107: Missing return value for function 'getCS'
+..\I386INS.H(265): Warning! W107: Missing return value for function 'getDS'
+..\I386INS.H(275): Warning! W107: Missing return value for function 'getES'
+..\I386INS.H(285): Warning! W107: Missing return value for function 'getSS'
+..\I386INS.H(295): Warning! W107: Missing return value for function 'getFS'
+..\I386INS.H(305): Warning! W107: Missing return value for function 'getGS'
+..\I386INS.H(503): Warning! W107: Missing return value for function 'inb'
+..\I386INS.H(515): Warning! W107: Missing return value for function 'inw'
+..\I386INS.H(527): Warning! W107: Missing return value for function 'ind'
+SYSLDR.C(52): Warning! W102: Type mismatch (warning)
+SYSLDR.C(52): Note! I2003: source conversion type is 'unsigned long'
+SYSLDR.C(52): Note! I2004: target conversion type is 'void *'
+SYSLDR.C(78): Warning! W102: Parameter 2: Type mismatch (warning)
+SYSLDR.C(78): Note! I2003: source conversion type is 'void *'
+SYSLDR.C(78): Note! I2004: target conversion type is 'unsigned long'
+SYSLDR.C(78): Note! I2002: 'LdrAddEntry' defined in: ..\LDR.H(33)
+SYSLDR.C(89): Warning! W113: Pointer type mismatch
+SYSLDR.C(89): Note! I2003: source conversion type is 'unsigned char *'
+SYSLDR.C(89): Note! I2004: target conversion type is 'unsigned char (__stdcall *)(void *__p1,unsigned long __p2,void *__p3)'
+SYSLDR.C(127): Warning! W102: Parameter 1: Type mismatch (warning)
+SYSLDR.C(127): Note! I2003: source conversion type is 'void *'
+SYSLDR.C(127): Note! I2004: target conversion type is 'unsigned long'
+SYSLDR.C(127): Note! I2002: 'LdrFindEntryByBase' defined in: ..\LDR.H(32)
+SYSLDR.C(133): Warning! W113: Pointer type mismatch
+SYSLDR.C(133): Note! I2003: source conversion type is 'unsigned char *'
+SYSLDR.C(133): Note! I2004: target conversion type is 'unsigned char (__stdcall *)(void *__p1,unsigned long __p2,void *__p3)'
+SYSLDR.C(160): Warning! W102: Type mismatch (warning)
+SYSLDR.C(160): Note! I2003: source conversion type is 'unsigned long'
+SYSLDR.C(160): Note! I2004: target conversion type is 'void *'
+SYSLDR.C(179): Warning! W102: Parameter 1: Type mismatch (warning)
+SYSLDR.C(179): Note! I2003: source conversion type is 'void *'
+SYSLDR.C(179): Note! I2004: target conversion type is 'unsigned long'
+SYSLDR.C(179): Note! I2002: 'LdrFindEntryByBase' defined in: ..\LDR.H(32)
+SYSLDR.C(203): Warning! W113: Pointer type mismatch
+SYSLDR.C(203): Note! I2003: source conversion type is 'signed char *'
+SYSLDR.C(203): Note! I2004: target conversion type is 'struct _IMAGE_NT_HEADERS *'
+SYSLDR.C(217): Warning! W113: Pointer type mismatch
+SYSLDR.C(217): Note! I2003: source conversion type is 'signed char *'
+SYSLDR.C(217): Note! I2004: target conversion type is 'struct _IMAGE_EXPORT_DIRECTORY *'
+SYSLDR.C(218): Warning! W113: Pointer type mismatch
+SYSLDR.C(218): Note! I2003: source conversion type is 'signed char *'
+SYSLDR.C(218): Note! I2004: target conversion type is 'unsigned long *'
+SYSLDR.C(219): Warning! W113: Pointer type mismatch
+SYSLDR.C(219): Note! I2003: source conversion type is 'signed char *'
+SYSLDR.C(219): Note! I2004: target conversion type is 'unsigned short *'
+SYSLDR.C(220): Warning! W113: Pointer type mismatch
+SYSLDR.C(220): Note! I2003: source conversion type is 'signed char *'
+SYSLDR.C(220): Note! I2004: target conversion type is 'unsigned long *'
+SYSLDR.C(226): Warning! E1180: Sign specifier mismatch
+SYSLDR.C(226): Note! I2003: source conversion type is 'signed char *'
+SYSLDR.C(226): Note! I2004: target conversion type is 'unsigned char *'
+SYSLDR.C(227): Warning! E1180: Sign specifier mismatch
+SYSLDR.C(227): Note! I2003: source conversion type is 'signed char *'
+SYSLDR.C(227): Note! I2004: target conversion type is 'unsigned char *'
+SYSLDR.C(233): Warning! E1181: Parameter 1, sign specifier mismatch
+SYSLDR.C(233): Note! I2003: source conversion type is 'signed char *'
+SYSLDR.C(233): Note! I2004: target conversion type is 'char const *'

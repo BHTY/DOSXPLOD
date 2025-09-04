@@ -1,0 +1,181 @@
+
+/**
+ *  
+ */
+SYSRESULT SysLoadLibrary(CHAR* pszLibName, PVOID* pvModule) {
+    SYSRESULT sysRes;
+    HFILE hFile;
+    IMAGE_DOS_HEADER dosHdr;
+    IMAGE_NT_HEADERS ntHdr;
+    ULONG ulRead;
+    INT i;
+    BYTE* pModule;
+    HMEMBLOCK hMemBlock;
+    DWORD dwDelta;
+
+    /* Open the image file */
+    if (DosOpen(pszLibName, FILE_READ, &hFile)) {
+        return SYSERR_IO_ERROR;
+    }
+
+    /* Read in the DOS MZ EXE header */
+    if (DosRead(hFile, &dosHdr, sizeof(dosHdr), &ulRead) || ulRead < sizeof(dosHdr) || /* Read in the MZ header */
+        dosHdr.e_magic != MZ_MAGIC || /* Is it a valid MZ EXE? */
+        DosSetFilePtr(hFile, dosHdr.e_lfanew, SEEK_SET, &ulRead) || ulRead != dosHdr.e_lfanew || /* Did we successfully seek to the PE header? */
+        DosRead(hFile, &ntHdr, sizeof(ntHdr), &ulRead) || ulRead < sizeof(ntHdr) || /* And read the PE header */
+        ntHdr.Signature != PE_MAGIC) { /* Is it a PE image? */
+        sysRes = SYSERR_IMG_FORMAT;
+        goto done;
+    }
+
+    /* Make sure that the image is targeted to the Intel 80386 (our current machine) */
+    if (ntHdr.FileHeader.Machine != IMAGE_MACHINE_TYPE_I386) {
+        sysRes = SYSERR_IMG_MACHINE_TYPE;
+        goto done;
+    }
+
+    /* Allocate the memory block to store the image in memory */
+    if (DpmiMemAlloc(ntHdr.OptionalHeader.SizeOfImage, (DWORD*)(&pModule), &hMemBlock)) {
+        sysRes = SYSERR_INSUFFICIENT_MEMORY;
+        goto done;
+    }
+
+    /* If the image needs to be relocated, make sure that a relocation data directory exists */
+    dwDelta = (DWORD)(pModule) - ntHdr.OptionalHeader.ImageBase; /* Calculate delta between desired image base and loaded location */
+    if (dwDelta && (ntHdr.FileHeader.Characteristics & IMAGE_FILE_RELOCS_STRIPPED)) {
+        DpmiMemFree(hMemBlock);
+        sysRes = SYSERR_IMG_RELOCS;
+        goto done;
+    }
+
+    printf("\nLoading image at %p\n", pModule);
+    printf("Image Base:  %p\n", ntHdr.OptionalHeader.ImageBase);
+    printf("Entry Point: %p\n", ntHdr.OptionalHeader.AddressOfEntryPoint);
+
+    /* Copy the headers into memory */
+    stosb(pModule, 0, ntHdr.OptionalHeader.SizeOfImage);
+
+
+    /* Load each section into memory */
+    for (i = 0; i < ntHdr.FileHeader.NumberOfSections; i++) {
+        CHAR Buffer[9];
+
+        IMAGE_SECTION_HEADER secHdr;
+        DWORD dwOffset;
+
+        if (DosRead(hFile, &secHdr, sizeof(secHdr), &ulRead) || /* Read current section header*/
+            DosSetFilePtr(hFile, 0, SEEK_CUR, &dwOffset) || /* Save current file offset */
+            DosSetFilePtr(hFile, secHdr.PointerToRawData, SEEK_SET, &ulRead) || /* And reposition to point to section data */
+            DosRead(hFile, pModule + secHdr.VirtualAddress, secHdr.SizeOfRawData, &ulRead) || /* And read the section data */
+            DosSetFilePtr(hFile, dwOffset, SEEK_SET, &ulRead)) /* And point back to the next section header */
+        {
+            DpmiMemFree(hMemBlock);
+            sysRes = SYSERR_IMG_FORMAT;
+            goto done;
+        }
+
+        Buffer[8] = 0;
+        memcpy(Buffer, secHdr.Name, 8);
+
+        printf("Section %s\n", Buffer);
+        printf("\tVirtual Address:     %p\n", secHdr.VirtualAddress);
+        printf("\tPointer to Raw Data: %p\n", secHdr.PointerToRawData);
+        printf("\tVirtual Size:        %p\n", secHdr.Misc.VirtualSize);
+        printf("\tPhysical Size:       %p\n", secHdr.SizeOfRawData);
+
+        /* there's still just a little bit more to do */
+    }
+
+    /* Parse imports */
+    
+    /* Call entry point */
+
+    /* Insert into loader lists */
+
+    /* Dump exports */
+
+
+    /* Success, set return values */
+    sysRes = SYSERR_SUCCESS;
+    *pvModule = pModule;
+
+    done: /* All done, cleanup */
+        DosClose(hFile);
+        return sysRes;
+}
+
+/**
+ *  SysGetProcAddress procedure - Retrieves the address of an exported function
+ *  or variable from the specified dynamic-link library.
+ * 
+ *  @param pModule: The base address of the DLL module.
+ * 
+ *  @param pszProcName: The function or variable name, or the function's ordinal
+ *  value. If this parameter is an ordinal value, it must be in the low-order
+ *  word; the high-order word must be zero.
+ * 
+ *  @return: If the function succeeds, the return value is the address of the
+ *  exported function or variable. If the function fails, the return value is
+ *  NULL.
+ */
+PVOID     SysGetProcAddress(PVOID pModule, CHAR* pszProcName) {
+    PIMAGE_NT_HEADERS pNtHdr = (CHAR*)pModule + ((PIMAGE_DOS_HEADER)pModule)->e_lfanew;
+    PIMAGE_OPTIONAL_HEADER pOptHdr = &(pNtHdr->OptionalHeader);
+    PIMAGE_DATA_DIRECTORY pExportDataDir = &(pOptHdr->DataDirectory[IMAGE_DIRECTORY_ENTRY_EXPORT]);
+    PIMAGE_EXPORT_DIRECTORY pExportDir;
+    DWORD* pExportAddressTable;
+    WORD* pNameOrdinalsPointer;
+    DWORD* pExportNamePointerTable;
+    INT i;
+
+    /* Check to make sure that there's actually an export data directory */
+    if (pExportDataDir->Size == 0) {
+        return 0;
+    }
+
+    pExportDir = (CHAR*)pModule + pExportDataDir->VirtualAddress;
+    pExportAddressTable = (CHAR*)pModule + pExportDir->AddressOfFunctions;
+    pNameOrdinalsPointer = (CHAR*)pModule + pExportDir->AddressOfNameOrdinals;
+    pExportNamePointerTable = (CHAR*)pModule + pExportDir->AddressOfNames;
+
+    /* IMAGE_ORDINAL_FLAG */
+
+    for (i = 0; i < pExportDir->NumberOfNames; i++) {
+        WORD wOrdinalIndex = pNameOrdinalsPointer[i];
+        BYTE* pProcName = (CHAR*)pModule + pExportNamePointerTable[i];
+        BYTE* fncAddress = (CHAR*)pModule + pExportAddressTable[wOrdinalIndex];
+
+        if (0) { /* forwarded export */
+
+        }
+
+        if ((DWORD)pszProcName > 0xFFFF && strcmp(pszProcName, pProcName) == 0) {
+            return fncAddress;
+        } else if ((WORD)pszProcName == wOrdinalIndex + 1) {
+            return fncAddress;
+        }
+    }
+
+    return 0;
+}
+
+
+except_handler:
+    pushad
+    push ds
+    push es
+    push gs
+    push fs
+    push esp
+    mov ax, datasel
+    mov ds, ax
+    call _ExceptionPrint
+    add esp, 4
+    pop fs
+    pop gs
+    pop es
+    pop ds
+    popad
+    add esp, 4
+
+    retfd

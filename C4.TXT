@@ -1,0 +1,84 @@
+The C4 80386 DOS Extender
+1. Overview
+2. Startup Process
+3. API Description
+
+=== OVERVIEW ===
+DOSX386.DLL
+
+
+=== STARTUP PROCESS ===
+The user attempts to launch the protected-mode executable PRGM32.EXE. Being a
+Portable Executable file, it has a standard DOS EXE header at the beginning,
+with a stub that invokes C4.EXE with the name of the executable (PRGM32.EXE)
+and prints out the following message:
+C4 80386 DOS Extender
+Copyright (c) 2025 by Will Klees
+
+If the attempt to execute C4.EXE fails, an error message will be printed:
+ERROR: C4.EXE was not found. Please add C4.EXE to your path.
+
+C4.EXE will then use DPMI to enter protected-mode. If DPMI services are 
+unavailable, the following error message will be printed:
+ERROR: DPMI services not present. Please launch a compatible server,
+including Windows in 386 Enhanced Mode.
+
+And if the processor is not an 80386 or above (or a 32-bit DPMI host) but
+rather an 80286 (or a 16-bit DPMI host), the following error message will
+be printed:
+ERROR: 32-bit DPMI services are required, but only 16-bit DPMI services are
+present.
+
+Otherwise, C4 will quickly install its own translation services for the DOS
+and BIOS APIs, install its own exception handlers, and then load the desired
+executable into memory and execute it, relocating it if necessary. Errors can
+also occur while loading the executable
+
+ERROR: Failed to load executable <> due to I/O error.
+ERROR: <> is not a valid Portable Executable.
+ERROR: <> is not targeted for machine type 80386.
+ERROR: The dynamic-link-library <> was not found.
+ERROR: The procedure entry point <> was not found in the dynamic-link-library <>.
+ERROR: Relocations were not found in the executable <>.
+
+The C4 Debugger is already a program using C4, so it circumvents some of this
+process. With the computer already in protected-mode / flat mode, the C4
+Debugger loads the target executable into the address space with none of the
+initialization.
+
+
+=== API DESCRIPTION ===
+DOS Protected-Mode Interface
+
+DOS API
+
+BIOS API
+
+System API
+    Image Loader
+
+Virtual DMA Services API
+
+
+VGA.DLL contains palette routines
+
+We need a way to sling around the command line
+I also like the idea of a debugger interface that is used for a client process to communicate to a debugger
+
+DOSXPLOD Interrrupt Services INT 2Eh
+    0000: SysMemAlloc
+    0001: SysMemReAlloc
+    0002: SysMemFree
+    0003: SysLoadLibrary
+    0004: SysFreeLibrary
+    0005: SysGetModuleHandle
+    0006: SysGetModuleFileName
+    0007: SysGetProcAddress
+    0008: SysSetExceptionHandler
+    0009: SysGetCommandLine
+    000A: SysGetVersion
+
+DOSXPLOD Debugger Services INT 41h
+    0000: Display character in DL
+    0002: Display NUL terminated string in DS:ESI
+    0064: Notify of DLL load
